@@ -947,7 +947,8 @@ Also see `mu4e-view-mark-or-move-to-trash'."
           (define-key map "E" 'mu4e-compose-edit)
 
           (define-key map (kbd "RET") 'mu4e-headers-view-message)
-          (define-key map [mouse-2]   'mu4e-headers-view-message)
+          (define-key map [mouse-3]   'mu4e-headers-view-message)
+          (define-key map [drag-mouse-3]   'mu4e~headers-quit-buffer)
 
           (define-key map "$" 'mu4e-show-log)
           (define-key map "H" 'mu4e-display-manual)

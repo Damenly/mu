@@ -755,6 +755,7 @@ FUNC should be a function taking two arguments:
           (define-key map  (kbd "C-c C-u") 'mu4e-update-mail-and-index)
 
           (define-key map "q" 'mu4e~view-quit-buffer)
+          (define-key map [drag-mouse-3] 'mu4e~view-quit-buffer)
 
           ;; note, 'z' is by-default bound to 'bury-buffer'
           ;; but that's not very useful in this case

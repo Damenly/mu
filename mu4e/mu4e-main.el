@@ -64,6 +64,9 @@ with SPC and therefore is not visible in buffer list.")
     (define-key map "A" 'mu4e-about)
     (define-key map "N" 'mu4e-news)
     (define-key map "H" 'mu4e-display-manual)
+;;;
+;;; custom keymap
+    (define-key map [drag-mouse-3] 'mu4e-quit)
     map)
 
   "Keymap for the *mu4e-main* buffer.")
@@ -84,7 +87,7 @@ with SPC and therefore is not visible in buffer list.")
 (defun mu4e~main-action-str (str &optional func-or-shortcut)
   "Highlight the first occurrence of [.] in STR.
 If FUNC-OR-SHORTCUT is non-nil and if it is a function, call it
-when STR is clicked (using RET or mouse-2); if FUNC-OR-SHORTCUT is
+when STR is clicked (using RET or mouse-3); if FUNC-OR-SHORTCUT is
 a string, execute the corresponding keyboard action when it is
 clicked."
   (let ((newstr
@@ -100,7 +103,7 @@ clicked."
                 (if (stringp func-or-shortcut)
                     (lambda()(interactive)
                       (execute-kbd-macro func-or-shortcut))))))
-    (define-key map [mouse-2] func)
+    (define-key map [mouse-3] func)
     (define-key map (kbd "RET") func)
     (put-text-property 0 (length newstr) 'keymap map newstr)
     (put-text-property (string-match "\\[.+$" newstr)
@@ -203,8 +206,6 @@ When REFRESH is non nil refresh infos from server."
            (mu4e~main-view-queue)
          "")
        "\n"
-       (mu4e~main-action-str "\t* [N]ews\n" 'mu4e-news)
-       (mu4e~main-action-str "\t* [A]bout mu4e\n" 'mu4e-about)
        (mu4e~main-action-str "\t* [H]elp\n" 'mu4e-display-manual)
        (mu4e~main-action-str "\t* [q]uit\n" 'mu4e-quit)
 
@@ -295,8 +296,6 @@ When REFRESH is non nil refresh infos from server."
             (mu4e~main-action-str "[b]ookmarks " 'mu4e-headers-search-bookmark)
             (mu4e~main-action-str "[;]Switch context " 'mu4e-context-switch)
             (mu4e~main-action-str "[U]pdate " 'mu4e-update-mail-and-index)
-            (mu4e~main-action-str "[N]ews " 'mu4e-news)
-            (mu4e~main-action-str "[A]bout " 'mu4e-about)
             (mu4e~main-action-str "[H]elp " 'mu4e-display-manual))))))
     (unless (member key '(?\C-g ?\C-\[))
       (let ((mu4e-command (lookup-key mu4e-main-mode-map (string key) t)))
