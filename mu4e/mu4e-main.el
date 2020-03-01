@@ -42,7 +42,8 @@
 
     (define-key map "s" 'mu4e-headers-search)
     (define-key map "q" 'mu4e-quit)
-    (define-key map "j" 'mu4e~headers-jump-to-maildir)
+    (define-key map [drag-mouse-3] 'mu4e-quit)
+    (define-key map "/" 'mu4e~headers-jump-to-maildir)
     (define-key map "C" 'mu4e-compose-new)
 
     (define-key map "m" 'mu4e~main-toggle-mail-sending-mode)
@@ -85,7 +86,7 @@
 (defun mu4e~main-action-str (str &optional func-or-shortcut)
   "Highlight the first occurence of [.] in STR.
 If FUNC-OR-SHORTCUT is non-nil and if it is a function, call it
-when STR is clicked (using RET or mouse-2); if FUNC-OR-SHORTCUT is
+when STR is clicked (using RET or mouse-3); if FUNC-OR-SHORTCUT is
 a string, execute the corresponding keyboard action when it is
 clicked."
   (let ((newstr
@@ -102,7 +103,7 @@ clicked."
 		    (lexical-let ((macro func-or-shortcut))
 		      (lambda()(interactive)
 			(execute-kbd-macro macro)))))))
-    (define-key map [mouse-2] func)
+    (define-key map [mouse-3] func)
     (define-key map (kbd "RET") func)
     (put-text-property 0 (length newstr) 'keymap map newstr)
     (put-text-property (string-match "\\[.+$" newstr)

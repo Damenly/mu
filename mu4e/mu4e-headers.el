@@ -748,6 +748,8 @@ after the end of the search results."
 (unless mu4e-headers-mode-map
   (setq mu4e-headers-mode-map
     (let ((map (make-sparse-keymap)))
+      (define-key map  [wheel-up] 'mu4e-headers-scroll-prev)
+      (define-key map  [wheel-down] 'mu4e-headers-scroll-next)
 
       (define-key map  (kbd "C-S-u")   'mu4e-update-mail-and-index)
       ;; for terminal users
@@ -774,6 +776,7 @@ after the end of the search results."
       (define-key map "V" 'mu4e-headers-toggle-skip-duplicates)
 
       (define-key map "q" 'mu4e~headers-quit-buffer)
+      (define-key map [drag-mouse-3] 'mu4e~headers-quit-buffer)
       (define-key map "g" 'mu4e-headers-rerun-search) ;; for compatibility
 
       (define-key map "%" 'mu4e-headers-mark-pattern)
@@ -839,7 +842,7 @@ after the end of the search results."
       (define-key map "E" 'mu4e-compose-edit)
 
       (define-key map (kbd "RET") 'mu4e-headers-view-message)
-      (define-key map [mouse-2]   'mu4e-headers-view-message)
+      (define-key map [mouse-3]   'mu4e-headers-view-message)
 
       (define-key map "$" 'mu4e-show-log)
       (define-key map "H" 'mu4e-display-manual)
@@ -1735,6 +1738,22 @@ Optionally, takes an integer N (prefix argument), to the Nth
 previous header."
   (interactive "P")
   (mu4e~headers-move (- (or n 1))))
+
+(defun mu4e-headers-scroll-next (&optional n)
+  "Move point to the previous message header.
+If this succeeds, return the new docid. Otherwise, return nil.
+Optionally, takes an integer N (prefix argument), to the Nth
+previous header."
+  (interactive "P")
+  (mu4e~headers-move (or n 4)))
+
+(defun mu4e-headers-scroll-prev (&optional n)
+  "Move point to the previous message header.
+If this succeeds, return the new docid. Otherwise, return nil.
+Optionally, takes an integer N (prefix argument), to the Nth
+previous header."
+  (interactive "P")
+  (mu4e~headers-move (- (or n 4))))
 
 (defun mu4e~headers-prev-or-next-unread (backwards)
   "Move point to the next message that is unread (and
